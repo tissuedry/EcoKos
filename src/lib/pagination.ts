@@ -1,4 +1,3 @@
-/** Menghasilkan daftar halaman ringkas, mis. [1, 2, 3, "…", 5]. */
 export function getPageItems(current: number, total: number): Array<number | "…"> {
   if (total <= 5) return Array.from({ length: total }, (_, index) => index + 1);
 

@@ -6,7 +6,6 @@ export interface NavItem {
   icon: LucideIcon;
 }
 
-/** Tiga tujuan utama setelah login: dashboard, pencatatan, dan tantangan. */
 export const NAV_ITEMS: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/pencatatan", label: "Catat & Log Beban Listrik", icon: Zap },

@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "EcoKos — Smart Living Kos",
-  description: "Pantau listrik dan sampah kamar kos, hemat tagihan, jaga bumi.",
+  description: "Pantau konsumsi listrik kamar kos realtime, hemat tagihan token, jaga bumi.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

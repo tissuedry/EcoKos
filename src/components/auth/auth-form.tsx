@@ -33,7 +33,6 @@ const INITIAL_VALUES: FormValues = {
   remember: true,
 };
 
-/** Validasi sisi klien saja; backend belum ada. */
 function validate(mode: Mode, values: FormValues): FormErrors {
   const errors: FormErrors = {};
   if (!values.username.trim()) {

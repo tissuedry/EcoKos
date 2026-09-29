@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Gauge, Pencil, Plug, Smile } from "lucide-react";
+import { Pencil, Plug, Smile } from "lucide-react";
 import { useState } from "react";
 import { CustomSelect } from "@/components/ui/select";
 import { VOLTAGE_STATUSES } from "@/data/pencatatan";
@@ -10,7 +10,6 @@ interface PageChipsProps {
   onTargetChange: (value: number) => void;
 }
 
-/** Dua kartu status di kanan atas: Target Harian dan Status Tegangan sesuai desain. */
 export function PageChips({ targetKwh, onTargetChange }: PageChipsProps) {
   const [editingTarget, setEditingTarget] = useState(false);
   const [draftTarget, setDraftTarget] = useState(String(targetKwh));
@@ -24,13 +23,8 @@ export function PageChips({ targetKwh, onTargetChange }: PageChipsProps) {
     setEditingTarget(false);
   };
 
-  const cycleVoltage = () => {
-    setVoltageIndex((index) => (index + 1) % VOLTAGE_STATUSES.length);
-  };
-
   return (
     <div className="flex flex-wrap items-center gap-3">
-      {/* Kartu Target Harian */}
       <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-white px-3.5 py-2 shadow-2xs transition-all hover:border-slate-300">
         <div className="grid size-9 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
           <Smile className="size-4" aria-hidden />
@@ -84,7 +78,6 @@ export function PageChips({ targetKwh, onTargetChange }: PageChipsProps) {
         </div>
       </div>
 
-      {/* Kartu Status Tegangan */}
       <div className="flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-white px-3.5 py-2 text-left shadow-2xs transition-all hover:border-slate-300">
         <div className="grid size-9 place-items-center rounded-xl bg-cyan-50 text-teal-600">
           <Plug className="size-4" aria-hidden />

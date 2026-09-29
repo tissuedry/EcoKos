@@ -41,7 +41,6 @@ export const DAILY_TELEMETRY = [
 export const SIMULATOR = {
   maxHours: 8,
   defaultHours: 2,
-  /** Rp per bulan yang dihemat untuk setiap jam kipas dikurangi. */
   savingPerHour: 6_000,
 };
 
@@ -49,9 +48,7 @@ export interface Mission {
   id: string;
   title: string;
   reward: string;
-  /** Jumlah hari pada bar progres. */
   goal: number;
-  /** Hari minimal agar target dianggap tercapai. */
   target: number;
   progress: number;
   daysLeft?: number;

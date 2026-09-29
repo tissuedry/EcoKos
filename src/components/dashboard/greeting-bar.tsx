@@ -10,7 +10,6 @@ export function GreetingBar({ name, room, kos }: { name: string; room: string; k
   const [syncing, setSyncing] = useState(false);
   const [updatedAt, setUpdatedAt] = useState("10 menit yang lalu");
 
-  /** Simulasi sinkron data; nanti diganti pemanggilan API telemetri. */
   const handleSync = () => {
     setSyncing(true);
     setTimeout(() => {

@@ -43,7 +43,6 @@ export function CustomSelect<T extends string = string>({
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Normalisasi options ke format SelectOption
   const normalizedOptions: SelectOption<T>[] = options.map((opt) => {
     if (typeof opt === "object" && opt !== null && "value" in opt) {
       return opt as SelectOption<T>;
@@ -53,7 +52,6 @@ export function CustomSelect<T extends string = string>({
 
   const selectedOption = normalizedOptions.find((opt) => opt.value === value);
 
-  // Close when clicking outside
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -70,7 +68,6 @@ export function CustomSelect<T extends string = string>({
     };
   }, [open]);
 
-  // Handle keyboard events
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (disabled) return;
     if (e.key === "Escape") {
@@ -84,7 +81,6 @@ export function CustomSelect<T extends string = string>({
     }
   };
 
-  // Base styling variants
   const getButtonStyles = () => {
     if (variant === "filter") {
       return cn(
@@ -99,7 +95,6 @@ export function CustomSelect<T extends string = string>({
         buttonClassName,
       );
     }
-    // "form" variant (default)
     return cn(
       "relative flex h-12 w-full items-center justify-between rounded-xl border border-slate-200/80 bg-slate-50/70 px-3.5 text-sm font-semibold text-ink transition-all hover:border-slate-300",
       open ? "border-primary bg-white ring-2 ring-primary/20 shadow-xs" : "focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20",
@@ -139,7 +134,6 @@ export function CustomSelect<T extends string = string>({
         </div>
       </button>
 
-      {/* Floating Menu Popover */}
       {open && (
         <div
           role="listbox"

@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, ChevronDown, ChevronsUpDown, Clock, Plug, Timer, X, Zap } from "lucide-react";
+import { Activity, Clock, Plug, Timer, X, Zap } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Card } from "@/components/ui/card";
 import { CustomSelect } from "@/components/ui/select";
@@ -10,7 +10,6 @@ import { formatKwh, formatRupiah } from "@/lib/format";
 import type { ElectricityLog } from "@/types";
 
 interface LogFormProps {
-  /** Jika terisi, form berada dalam mode edit. */
   editing: ElectricityLog | null;
   onSubmit: (values: Omit<ElectricityLog, "id" | "timestamp">) => void;
   onCancelEdit: () => void;
@@ -49,7 +48,6 @@ export function LogForm({ editing, onSubmit, onCancelEdit }: LogFormProps) {
   return (
     <Card className="rounded-2xl border border-slate-200/70 p-6 shadow-sm">
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        {/* Header Form */}
         <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
           <div className="flex items-center gap-3">
             <div className="grid size-11 place-items-center rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100/60 shadow-2xs">
@@ -70,9 +68,7 @@ export function LogForm({ editing, onSubmit, onCancelEdit }: LogFormProps) {
           </span>
         </div>
 
-        {/* 3 Input Columns */}
         <div className="grid gap-4 md:grid-cols-3">
-          {/* Kolom 1: Peralatan Kos */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="appliance" className="text-[11px] font-bold tracking-wider text-ink-muted uppercase">
               PERALATAN KOS <span className="text-danger">*</span>
@@ -91,7 +87,6 @@ export function LogForm({ editing, onSubmit, onCancelEdit }: LogFormProps) {
             />
           </div>
 
-          {/* Kolom 2: Durasi Pemakaian */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="hours" className="text-[11px] font-bold tracking-wider text-ink-muted uppercase">
               DURASI PEMAKAIAN <span className="text-danger">*</span>
@@ -113,7 +108,6 @@ export function LogForm({ editing, onSubmit, onCancelEdit }: LogFormProps) {
             {error && <p role="alert" className="text-[11px] font-medium text-danger">{error}</p>}
           </div>
 
-          {/* Kolom 3: Rentang Waktu */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="range" className="text-[11px] font-bold tracking-wider text-ink-muted uppercase">
               RENTANG WAKTU <span className="font-normal text-slate-400">(OPSIONAL)</span>
@@ -132,7 +126,6 @@ export function LogForm({ editing, onSubmit, onCancelEdit }: LogFormProps) {
           </div>
         </div>
 
-        {/* Bottom Estimation Bar & Submit Button */}
         <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-emerald-100/60 bg-[#F6FBF9] p-4">
           <div className="flex items-center gap-3">
             <div className="grid size-10 place-items-center rounded-xl bg-emerald-500 text-white shadow-2xs">

@@ -49,7 +49,6 @@ export function LoadDonut() {
           </PieChart>
         </ResponsiveContainer>
 
-        {/* Center Dynamic Label */}
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center p-3 text-center">
           <p className="text-[26px] leading-7 font-bold tracking-tight text-ink transition-all duration-200">
             {activeSlice.percent}%
