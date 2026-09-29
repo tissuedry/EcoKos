@@ -13,7 +13,7 @@ type Mode = "login" | "register";
 
 interface FormValues {
   name: string;
-  email: string;
+  username: string;
   password: string;
   kos: string;
   room: string;
@@ -25,7 +25,7 @@ type FormErrors = Partial<Record<keyof FormValues, string>>;
 
 const INITIAL_VALUES: FormValues = {
   name: "",
-  email: "",
+  username: "",
   password: "",
   kos: KOS_OPTIONS[0],
   room: "",
@@ -36,7 +36,11 @@ const INITIAL_VALUES: FormValues = {
 /** Validasi sisi klien saja; backend belum ada. */
 function validate(mode: Mode, values: FormValues): FormErrors {
   const errors: FormErrors = {};
-  if (!/^\S+@\S+\.\S+$/.test(values.email)) errors.email = "Masukkan email yang valid.";
+  if (!values.username.trim()) {
+    errors.username = "Username wajib diisi.";
+  } else if (values.username.trim().length < 3) {
+    errors.username = "Username minimal 3 karakter.";
+  }
   if (values.password.length < 8) errors.password = "Kata sandi minimal 8 karakter.";
   if (mode === "register") {
     if (!values.name.trim()) errors.name = "Nama lengkap wajib diisi.";
@@ -69,10 +73,9 @@ export function AuthForm() {
     setErrors(found);
     if (Object.keys(found).length > 0) return;
 
-    const fallbackName = values.email.split("@")[0] || "Mahasiswa";
     saveSession({
-      name: isRegister ? values.name.trim() : fallbackName,
-      email: values.email,
+      name: isRegister ? values.name.trim() : values.username.trim(),
+      username: values.username.trim(),
       kos: isRegister ? values.kos : KOS_OPTIONS[0],
       room: isRegister ? values.room.trim() : "204",
       quotaKwh: values.quota,
@@ -127,15 +130,15 @@ export function AuthForm() {
                 />
               </Field>
             )}
-            <Field label="Email Kampus / Mahasiswa" htmlFor="email" error={errors.email}>
+            <Field label="Username Mahasiswa" htmlFor="username" error={errors.username}>
               <IconInput
-                id="email"
-                type="email"
+                id="username"
+                type="text"
                 icon={<AtSign className="size-3.5" />}
-                placeholder="dimas@student.ac.id"
-                autoComplete="email"
-                value={values.email}
-                onChange={(event) => update("email", event.target.value)}
+                placeholder="dimas_pratama"
+                autoComplete="username"
+                value={values.username}
+                onChange={(event) => update("username", event.target.value.toLowerCase().replace(/\s+/g, "_"))}
               />
             </Field>
           </div>

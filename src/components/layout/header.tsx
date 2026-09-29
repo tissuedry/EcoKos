@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, ChevronDown, Home, LogOut, Menu, User } from "lucide-react";
+import { ChevronDown, Home, LogOut, Menu, User } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import type { UserSession } from "@/types";
@@ -16,7 +16,7 @@ export function Header({ session, ecoScore, onOpenMenu, onLogout }: HeaderProps)
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-30 flex h-16 items-center justify-between bg-canvas/80 px-4 shadow-header backdrop-blur-md sm:px-6 lg:left-72">
+    <header className="fixed top-0 right-0 left-0 z-30 flex h-16 items-center justify-between bg-canvas/80 px-4 shadow-header backdrop-blur-md sm:px-6 lg:left-72 lg:px-8">
       <div className="flex items-center gap-3">
         <button
           type="button"
@@ -36,15 +36,6 @@ export function Header({ session, ecoScore, onOpenMenu, onLogout }: HeaderProps)
       </div>
 
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          aria-label="Notifikasi"
-          className="relative grid size-10 place-items-center rounded-full hover:bg-surface-mid"
-        >
-          <Bell className="size-[18px]" />
-          <span className="absolute top-2 right-2 size-2 rounded-full bg-danger" />
-        </button>
-
         <div className="relative">
           <button
             type="button"
@@ -65,7 +56,9 @@ export function Header({ session, ecoScore, onOpenMenu, onLogout }: HeaderProps)
 
           {menuOpen && (
             <div role="menu" className="absolute right-0 mt-2 w-48 rounded-xl bg-white p-1 shadow-float">
-              <p className="truncate px-3 py-2 text-[11px] text-ink-muted">{session.email}</p>
+              <p className="truncate px-3 py-2 text-xs font-semibold text-ink-muted">
+                @{session.username || session.email?.split("@")[0] || "anak_kos"}
+              </p>
               <button
                 type="button"
                 role="menuitem"

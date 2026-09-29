@@ -1,6 +1,7 @@
 export interface UserSession {
   name: string;
-  email: string;
+  username: string;
+  email?: string;
   kos: string;
   room: string;
   quotaKwh: number;
