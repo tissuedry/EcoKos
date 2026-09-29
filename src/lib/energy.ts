@@ -7,7 +7,6 @@ export interface EnergyEstimate {
   co2: number;
 }
 
-/** Estimasi konsumsi, biaya, dan emisi dari daya alat × durasi pemakaian. */
 export function estimateEnergy(appliance: Appliance, hours: number): EnergyEstimate {
   const kwh = appliance.powerKw * Math.max(hours, 0);
   return {

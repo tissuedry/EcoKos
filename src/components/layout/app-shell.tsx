@@ -8,10 +8,8 @@ import { clearSession } from "@/lib/session";
 import { Header } from "./header";
 import { Sidebar } from "./sidebar";
 
-/** Skor dummy; nanti berasal dari API. */
 const ECO_SCORE = 84;
 
-/** Membungkus halaman terautentikasi: guard sesi, sidebar, dan header. */
 export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { session, ready } = useSession();

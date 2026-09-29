@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MorphingAuthPage } from "@/components/landing/morphing-auth-page";
+import { AuthPage } from "@/components/landing/auth-page";
 
 export const metadata: Metadata = {
   title: "EcoKos — Smart Living Mahasiswa Mandiri",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <MorphingAuthPage initialMode="landing" />;
+  return <AuthPage initialMode="landing" />;
 }

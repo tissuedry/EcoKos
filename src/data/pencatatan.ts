@@ -1,6 +1,5 @@
 import type { Appliance, ElectricityLog, LogCategory } from "@/types";
 
-/** Tarif PLN R-1 dan faktor emisi jaringan listrik (dummy). */
 export const TARIFF_PER_KWH = 1_444;
 export const EMISSION_KG_PER_KWH = 0.8;
 export const DAILY_TARGET_KWH = 3.5;
@@ -34,7 +33,6 @@ export const DATE_FILTERS = ["Minggu Ini", "Bulan Ini", "Semua Waktu"] as const;
 
 export const VOLTAGE_STATUSES = ["Stabil 220V", "Naik 235V", "Turun 200V"] as const;
 
-/** Log awal yang persis mengikuti desain. */
 const SEED_LOGS: ElectricityLog[] = [
   { id: "l1", timestamp: "2025-10-24T14:30:00", applianceId: "ac", category: "Pendingin", title: "AC Kamar (0.5 PK)", description: "Mode hemat 25°C • Durasi 4 jam", kwh: 1.4, hours: 4, range: "Pagi (06:00 - 11:00)" },
   { id: "l2", timestamp: "2025-10-24T08:00:00", applianceId: "fridge", category: "Pendingin", title: "Kulkas Mini Kamar", description: "Standby kompresor siklus 24 jam", kwh: 0.85, hours: 24, range: "Dini Hari (23:00 - 06:00)" },
@@ -44,7 +42,6 @@ const SEED_LOGS: ElectricityLog[] = [
   { id: "l6", timestamp: "2025-10-22T19:20:00", applianceId: "iron", category: "Beban Berat", title: "Setrika Pakaian Mingguan", description: "Penyetrikaan pakaian kuliah (1.5 jam)", kwh: 0.45, hours: 1.5, range: "Malam (18:00 - 23:00)" },
 ];
 
-/** Melengkapi data dummy hingga 28 catatan secara deterministik. */
 function buildFillerLogs(count: number): ElectricityLog[] {
   return Array.from({ length: count }, (_, index) => {
     const appliance = APPLIANCES[index % APPLIANCES.length];

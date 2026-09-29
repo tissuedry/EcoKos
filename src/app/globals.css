@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* EcoKos design tokens (diambil dari file Figma) */
 @theme inline {
   --color-canvas: #faf8ff;
   --color-surface: #ffffff;
@@ -43,7 +42,6 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Range slider dengan track berwarna */
 input[type="range"].eco-range {
   -webkit-appearance: none;
   appearance: none;

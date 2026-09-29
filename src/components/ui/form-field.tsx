@@ -34,7 +34,6 @@ interface IconInputProps extends ComponentPropsWithoutRef<"input"> {
   trailing?: ReactNode;
 }
 
-/** Input dengan ikon di kiri dan slot opsional di kanan. */
 export function IconInput({ icon, trailing, className, ...props }: IconInputProps) {
   return (
     <div className="relative">

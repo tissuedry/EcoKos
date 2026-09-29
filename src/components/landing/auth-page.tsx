@@ -5,8 +5,8 @@ import {
   ArrowRight,
   Award,
   Building2,
+  Calculator,
   CheckCircle2,
-  Recycle,
   ShieldCheck,
   Sparkles,
   Zap,
@@ -16,7 +16,7 @@ import { AuthForm } from "@/components/auth/auth-form";
 import { LogoMark } from "@/components/brand/logo";
 import { cn } from "@/lib/cn";
 
-interface MorphingAuthPageProps {
+interface AuthPageProps {
   initialMode?: "landing" | "auth";
 }
 
@@ -28,9 +28,9 @@ const FEATURE_CARDS = [
     iconBg: "bg-emerald-50 text-emerald-600",
   },
   {
-    icon: Recycle,
-    title: "Kurangi Sampah Plastik & Olshop",
-    description: "Catat & kurangi kantong belanjaan warung serta botol kopi kekinian harian.",
+    icon: Calculator,
+    title: "Estimasi Biaya Listrik",
+    description: "Hitung perkiraan pengeluaran token harian dan bulanan secara akurat agar dompet tetap aman.",
     iconBg: "bg-cyan-50 text-teal-600",
   },
   {
@@ -41,7 +41,7 @@ const FEATURE_CARDS = [
   },
 ];
 
-export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPageProps) {
+export function AuthPage({ initialMode = "landing" }: AuthPageProps) {
   const [isAuth, setIsAuth] = useState(initialMode === "auth");
 
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -63,10 +63,6 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
     setIsAuth(toAuth);
   };
 
-  // Hardware-accelerated FLIP Animation: smoothly glide and scale
-  // (1) Brand Header (Logo + EcoKos + Tagline),
-  // (2) Hero Headline & Description ("Hemat Listrik..."), and
-  // (3) Feature Cards ("Transparansi...") between Landing & Auth layouts
   useLayoutEffect(() => {
     const items = [
       { ref: headerRef, prev: headerPrevRect, withScale: true },
@@ -97,8 +93,6 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
         scaleX = prev.width / current.width;
         scaleY = prev.height / current.height;
 
-        // If aspect ratios differ significantly (e.g. text line wrapping),
-        // keep scaling uniform based on width to prevent letter distortion
         if (Math.abs(scaleX - scaleY) > 0.15) {
           scaleY = scaleX;
         }
@@ -123,14 +117,12 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
 
     if (activeAnimations.length === 0) return;
 
-    // 1. INVERT: Snap elements to previous visual position & scale immediately without animation
     for (const { el, dx, dy, scaleX, scaleY } of activeAnimations) {
       el.style.transformOrigin = "top left";
       el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${scaleX}, ${scaleY})`;
       el.style.transition = "none";
     }
 
-    // 2. PLAY: Smoothly glide & scale into destination layout
     const rafId = requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         for (const { el } of activeAnimations) {
@@ -154,7 +146,6 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
     };
   }, [isAuth]);
 
-  // Reusable 3 Feature Cards Component
   const renderFeatureCards = () => (
     <div ref={cardsRef} className="w-full relative z-20 will-change-transform">
       <ul className="flex flex-col gap-3.5 w-full">
@@ -178,7 +169,6 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
 
   return (
     <main className="relative grid min-h-screen place-items-center overflow-hidden bg-canvas p-4 sm:p-6 lg:p-8">
-      {/* Background Decorative Blur Orbs */}
       <div
         aria-hidden
         className={cn(
@@ -194,7 +184,6 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
         )}
       />
 
-      {/* Main Container Card */}
       <div
         className={cn(
           "relative flex flex-col w-full max-w-[1280px] overflow-hidden rounded-3xl border border-line/30 bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
@@ -202,14 +191,9 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
         )}
       >
         {isAuth ? (
-          /* ==========================================================
-             AUTHENTICATION VIEW (100% IDENTICAL TO IMAGE 2 OF AUTH PAGE)
-             ========================================================== */
           <div className="grid w-full h-full lg:grid-cols-12 flex-1 animate-in fade-in duration-500">
-            {/* Left Column: BrandPanel with Back Button */}
             <div className="flex flex-col justify-between gap-8 bg-gradient-to-br from-surface-low via-white to-surface-low/50 p-8 lg:col-span-5 lg:border-r lg:border-line/40 lg:p-12">
               <div>
-                {/* Back Button directly above the logo row */}
                 <div className="mb-4 -mt-2">
                   <button
                     type="button"
@@ -221,7 +205,6 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
                   </button>
                 </div>
 
-                {/* Logo and Status */}
                 <div className="flex items-center justify-between gap-3">
                   <div
                     ref={headerRef}
@@ -242,7 +225,6 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
                 </div>
               </div>
 
-              {/* Title & Description */}
               <div className="space-y-2">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-[11px] font-bold tracking-wider text-primary uppercase">
@@ -262,26 +244,20 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
                   </h1>
                   <p className="text-sm leading-relaxed text-ink-muted">
                     Solusi pintar mahasiswa kos modern untuk pantau kWh kamar realtime, hindari lonjakan
-                    tagihan tak terduga, dan dukung gaya hidup minim sampah bersama teman sekosan.
+                    tagihan tak terduga, dan kendalikan beban listrik bersama teman sekosan.
                   </p>
                 </div>
               </div>
 
-              {/* Feature Cards Glided into Left Column */}
               {renderFeatureCards()}
             </div>
 
-            {/* Right Column: AuthForm */}
             <div className="lg:col-span-7 animate-in fade-in-50 slide-in-from-right-8 duration-600">
               <AuthForm />
             </div>
           </div>
         ) : (
-          /* ==========================================================
-             LANDING PAGE VIEW (100% IDENTICAL TO IMAGE 2 OF LANDING PAGE)
-             ========================================================== */
           <div className="flex flex-col w-full flex-1 justify-between animate-in fade-in duration-500">
-            {/* Top Navigation Bar: Spans FULL 100% Width of Card */}
             <div className="flex items-center justify-between border-b border-slate-100/90 px-8 py-5 sm:px-12">
               <div
                 ref={headerRef}
@@ -296,7 +272,6 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
                 </div>
               </div>
 
-              {/* Right Side: 50+ Kos Aktif (No Masuk Button as requested) */}
               <div className="flex items-center gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-50 border border-slate-200/80 px-4 py-1.5 text-xs font-semibold text-ink-muted shadow-2xs">
                   <span className="size-2 rounded-full bg-emerald-500" />
@@ -305,9 +280,7 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
               </div>
             </div>
 
-            {/* Split Showcase: Hero (Left) and 3 Feature Cards (Right) */}
             <div className="grid gap-10 px-8 py-10 sm:px-12 lg:grid-cols-12 lg:items-center lg:py-16">
-              {/* Left Column: Hero (lg:col-span-7 for spacious 2-line title) */}
               <div className="flex flex-col gap-6 lg:col-span-7">
                 <div>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200/60 px-3.5 py-1 text-[11px] font-bold tracking-wider text-primary uppercase shadow-2xs">
@@ -326,7 +299,7 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
                   </h1>
                   <p className="max-w-xl text-sm leading-relaxed text-ink-muted sm:text-base">
                     Solusi pintar mahasiswa kos modern untuk pantau kWh kamar realtime, hindari lonjakan
-                    tagihan tak terduga, dan dukung gaya hidup minim sampah bersama teman sekosan.
+                    tagihan tak terduga, dan kendalikan beban listrik bersama teman sekosan.
                   </p>
                 </div>
 
@@ -347,13 +320,11 @@ export function MorphingAuthPage({ initialMode = "landing" }: MorphingAuthPagePr
                 </div>
               </div>
 
-              {/* Right Column: 3 Feature Cards (lg:col-span-5) */}
               <div className="flex flex-col gap-3.5 lg:col-span-5">
                 {renderFeatureCards()}
               </div>
             </div>
 
-            {/* Bottom Footer Strip: Spans FULL 100% Width of Card */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 bg-slate-50/50 px-8 py-3.5 text-xs text-ink-muted sm:px-12">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="size-4 text-emerald-600 shrink-0" />
