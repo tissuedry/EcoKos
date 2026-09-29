@@ -1,17 +1,13 @@
 "use client";
 
-import { Calculator, Save, X } from "lucide-react";
+import { Activity, ChevronDown, ChevronsUpDown, Clock, Plug, Timer, X, Zap } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { CustomSelect } from "@/components/ui/select";
 import { APPLIANCES, TIME_RANGES } from "@/data/pencatatan";
 import { estimateEnergy } from "@/lib/energy";
 import { formatKwh, formatRupiah } from "@/lib/format";
 import type { ElectricityLog } from "@/types";
-
-const fieldClass =
-  "h-11 w-full rounded-xl border border-ink-subtle/60 bg-surface-low px-4 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
 interface LogFormProps {
   /** Jika terisi, form berada dalam mode edit. */
@@ -21,7 +17,6 @@ interface LogFormProps {
 }
 
 export function LogForm({ editing, onSubmit, onCancelEdit }: LogFormProps) {
-  // State awal diambil dari log yang diedit; parent memberi `key` agar form di-reset saat baris berganti.
   const [applianceId, setApplianceId] = useState(editing?.applianceId ?? APPLIANCES[0].id);
   const [hours, setHours] = useState(editing ? String(editing.hours) : "4");
   const [range, setRange] = useState<string>(editing?.range ?? TIME_RANGES[0]);
@@ -52,74 +47,133 @@ export function LogForm({ editing, onSubmit, onCancelEdit }: LogFormProps) {
   };
 
   return (
-    <Card className="overflow-hidden">
-      <div aria-hidden className="absolute -top-24 -right-24 size-72 rounded-full bg-primary/5 blur-3xl" />
-      <form onSubmit={handleSubmit} className="relative flex flex-col gap-4">
-        <div className="flex flex-wrap items-center justify-between gap-2 pb-2">
-          <div>
-            <h2 className="text-lg font-semibold">{editing ? "Ubah Log" : "Tambah Log Baru"}</h2>
-            <p className="text-[11px] font-bold text-ink-muted">Pencatatan konsumsi daya perangkat elektronik kamar</p>
+    <Card className="rounded-2xl border border-slate-200/70 p-6 shadow-sm">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        {/* Header Form */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-1">
+          <div className="flex items-center gap-3">
+            <div className="grid size-11 place-items-center rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100/60 shadow-2xs">
+              <Zap className="size-5" aria-hidden />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-ink">
+                {editing ? "Ubah Log" : "Tambah Log Baru"}
+              </h2>
+              <p className="text-xs text-ink-muted font-medium">
+                Pencatatan konsumsi daya perangkat elektronik kamar
+              </p>
+            </div>
           </div>
-          <Badge>Mode Telemetri Listrik Aktif</Badge>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100/80 border border-emerald-300/50 px-3.5 py-1 text-xs font-semibold text-emerald-800 shadow-2xs">
+            <Zap className="size-3.5 fill-emerald-600 text-emerald-600" aria-hidden />
+            Mode Telemetri Listrik Aktif
+          </span>
         </div>
 
+        {/* 3 Input Columns */}
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="appliance" className="text-[11px] font-semibold tracking-wide text-ink-muted">Peralatan Kos</label>
-            <select id="appliance" value={applianceId} onChange={(event) => setApplianceId(event.target.value)} className={fieldClass}>
-              {APPLIANCES.map((item) => (
-                <option key={item.id} value={item.id}>{item.name}</option>
-              ))}
-            </select>
+          {/* Kolom 1: Peralatan Kos */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="appliance" className="text-[11px] font-bold tracking-wider text-ink-muted uppercase">
+              PERALATAN KOS <span className="text-danger">*</span>
+            </label>
+            <CustomSelect
+              value={applianceId}
+              onChange={setApplianceId}
+              options={APPLIANCES.map((item) => ({
+                value: item.id,
+                label: item.name,
+                description: `${(item.powerKw * 1000).toFixed(0)} Watt • ${item.category}`,
+              }))}
+              icon={<Plug className="size-4 shrink-0 text-emerald-500" aria-hidden />}
+              rightIcon="chevrons"
+              ariaLabel="Pilih Peralatan Kos"
+            />
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="hours" className="text-[11px] font-semibold tracking-wide text-ink-muted">Durasi Pemakaian</label>
-            <div className="relative">
+
+          {/* Kolom 2: Durasi Pemakaian */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="hours" className="text-[11px] font-bold tracking-wider text-ink-muted uppercase">
+              DURASI PEMAKAIAN <span className="text-danger">*</span>
+            </label>
+            <div className="relative flex h-12 w-full items-center rounded-xl border border-slate-200/80 bg-slate-50/70 px-3.5 transition-all hover:border-slate-300 focus-within:border-primary focus-within:bg-white focus-within:ring-2 focus-within:ring-primary/20">
+              <Timer className="mr-2.5 size-4 shrink-0 text-emerald-500" aria-hidden />
               <input
                 id="hours"
                 inputMode="decimal"
                 value={hours}
                 onChange={(event) => setHours(event.target.value)}
                 aria-invalid={Boolean(error)}
-                className={fieldClass}
+                className="w-full bg-transparent text-sm font-semibold text-ink outline-none"
               />
-              <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-[11px] font-bold text-ink-subtle">Jam</span>
+              <span className="shrink-0 rounded-lg border border-slate-200 bg-white px-2.5 py-0.5 text-xs font-semibold text-slate-500 shadow-2xs">
+                Jam
+              </span>
             </div>
             {error && <p role="alert" className="text-[11px] font-medium text-danger">{error}</p>}
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="range" className="text-[11px] font-semibold tracking-wide text-ink-muted">Rentang Waktu</label>
-            <select id="range" value={range} onChange={(event) => setRange(event.target.value)} className={fieldClass}>
-              {TIME_RANGES.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
+
+          {/* Kolom 3: Rentang Waktu */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="range" className="text-[11px] font-bold tracking-wider text-ink-muted uppercase">
+              RENTANG WAKTU <span className="font-normal text-slate-400">(OPSIONAL)</span>
+            </label>
+            <CustomSelect
+              value={range}
+              onChange={setRange}
+              options={TIME_RANGES.map((item) => ({
+                value: item,
+                label: item,
+              }))}
+              icon={<Clock className="size-4 shrink-0 text-emerald-500" aria-hidden />}
+              rightIcon="chevron"
+              ariaLabel="Pilih Rentang Waktu"
+            />
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-surface-low p-4">
-          <div className="flex items-center gap-2">
-            <span className="grid size-8 place-items-center rounded-lg bg-mint text-primary">
-              <Calculator className="size-4" aria-hidden />
-            </span>
+        {/* Bottom Estimation Bar & Submit Button */}
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-emerald-100/60 bg-[#F6FBF9] p-4">
+          <div className="flex items-center gap-3">
+            <div className="grid size-10 place-items-center rounded-xl bg-emerald-500 text-white shadow-2xs">
+              <Activity className="size-5" aria-hidden />
+            </div>
             <div>
-              <p className="text-[11px] font-bold text-ink-muted">Estimasi Konsumsi Otomatis</p>
-              <p aria-live="polite" className="text-xs font-semibold">
-                ~{formatKwh(estimate.kwh)} ({formatRupiah(estimate.cost)} • {estimate.co2.toFixed(2)} kg CO2e)
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase">
+                  ESTIMASI KONSUMSI BEBAN
+                </span>
+                <span className="rounded bg-emerald-100/80 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700">
+                  Auto
+                </span>
+              </div>
+              <p aria-live="polite" className="text-sm font-bold text-ink">
+                ~{formatKwh(estimate.kwh)}{" "}
+                <span className="font-normal text-ink-muted">
+                  ({formatRupiah(estimate.cost)} • {estimate.co2.toFixed(2)} kg CO2e)
+                </span>
               </p>
             </div>
           </div>
+
           <div className="flex items-center gap-2">
             {editing && (
-              <Button variant="ghost" onClick={onCancelEdit}>
+              <button
+                type="button"
+                onClick={onCancelEdit}
+                className="flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-semibold text-ink-muted hover:bg-slate-200/60 transition-colors"
+              >
                 <X className="size-4" aria-hidden />
                 Batal
-              </Button>
+              </button>
             )}
-            <Button type="submit">
-              <Save className="size-4" aria-hidden />
+            <button
+              type="submit"
+              className="flex items-center gap-2 rounded-xl bg-[#005c3c] hover:bg-[#004930] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all active:scale-[0.98]"
+            >
+              <Plug className="size-4" aria-hidden />
               {editing ? "Perbarui Log" : "Simpan Log Listrik"}
-            </Button>
+            </button>
           </div>
         </div>
       </form>

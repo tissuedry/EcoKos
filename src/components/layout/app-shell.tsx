@@ -52,8 +52,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <Header session={session} ecoScore={ECO_SCORE} onOpenMenu={() => setDrawerOpen(true)} onLogout={handleLogout} />
 
-      <main className="min-h-screen bg-canvas px-4 pt-16 pb-10 sm:px-6 lg:pl-[calc(18rem+1.5rem)]">
-        <div className="mx-auto max-w-[1200px]">{children}</div>
+      <main className="min-h-screen bg-canvas px-4 pt-16 pb-10 sm:px-6 lg:pl-[calc(18rem+2rem)] lg:pr-8">
+        <div className="w-full">{children}</div>
       </main>
     </ToastProvider>
   );

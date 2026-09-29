@@ -28,7 +28,15 @@ export function readRawSession(): string {
 export function parseSession(raw: string): UserSession | null {
   if (!raw) return null;
   try {
-    return JSON.parse(raw) as UserSession;
+    const data = JSON.parse(raw);
+    return {
+      ...data,
+      username:
+        data.username ||
+        data.email?.split("@")[0] ||
+        data.name?.toLowerCase().replace(/\s+/g, "_") ||
+        "anak_kos",
+    } as UserSession;
   } catch {
     return null;
   }

@@ -8,15 +8,12 @@ import { cn } from "@/lib/cn";
 import { co2Of, costOf } from "@/lib/energy";
 import { formatDate, formatRupiah, formatTime } from "@/lib/format";
 import { getPageItems } from "@/lib/pagination";
+import { CustomSelect } from "@/components/ui/select";
 import type { ElectricityLog } from "@/types";
 import { CategoryBadge } from "./category-badge";
 
 const PAGE_SIZE = 6;
 const DAY_MS = 86_400_000;
-
-const selectWrapper =
-  "relative flex h-10 items-center rounded-full border border-ink-subtle/60 bg-surface-low pl-4 text-xs font-semibold";
-const selectClass = "h-full appearance-none bg-transparent pr-8 outline-none";
 
 interface LogTableProps {
   logs: ElectricityLog[];
@@ -75,32 +72,36 @@ export function LogTable({ logs, onEdit, onDelete }: LogTableProps) {
               className="h-10 w-full rounded-full border border-ink-subtle/60 bg-surface-low pr-4 pl-9 text-[13px] outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             />
           </div>
-          <label className={selectWrapper}>
-            <Filter className="mr-2 size-3.5 text-ink-subtle" aria-hidden />
-            <select
-              aria-label="Filter kategori"
+          <div className="w-auto min-w-[190px]">
+            <CustomSelect
               value={category}
-              onChange={(event) => resetPage(setCategory)(event.target.value as typeof category)}
-              className={selectClass}
-            >
-              {CATEGORY_FILTERS.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
-          </label>
-          <label className={selectWrapper}>
-            <CalendarDays className="mr-2 size-3.5 text-ink-subtle" aria-hidden />
-            <select
-              aria-label="Filter tanggal"
+              onChange={(val) => resetPage(setCategory)(val as typeof category)}
+              options={CATEGORY_FILTERS.map((item) => ({
+                value: item,
+                label: item,
+              }))}
+              variant="filter"
+              icon={<Filter className="size-3.5 text-ink-subtle" aria-hidden />}
+              rightIcon="chevron"
+              dropdownClassName="w-56 right-0"
+              ariaLabel="Filter kategori"
+            />
+          </div>
+          <div className="w-auto min-w-[150px]">
+            <CustomSelect
               value={period}
-              onChange={(event) => resetPage(setPeriod)(event.target.value as typeof period)}
-              className={selectClass}
-            >
-              {DATE_FILTERS.map((item) => (
-                <option key={item}>{item}</option>
-              ))}
-            </select>
-          </label>
+              onChange={(val) => resetPage(setPeriod)(val as typeof period)}
+              options={DATE_FILTERS.map((item) => ({
+                value: item,
+                label: item,
+              }))}
+              variant="filter"
+              icon={<CalendarDays className="size-3.5 text-ink-subtle" aria-hidden />}
+              rightIcon="chevron"
+              dropdownClassName="w-44 right-0"
+              ariaLabel="Filter tanggal"
+            />
+          </div>
         </div>
       </div>
 
